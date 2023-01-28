@@ -15,26 +15,15 @@ router.post(
   async (req: Request, res: Response) => {
     try {
       const data = await Billing.create(req.body)
-      if (data) {
-        return res.json({
-          success: true,
-          data: data.toObject(),
-        })
-      } else {
-        return res
-          .status(400)
-          .json({
-            success: false,
-            message: "something went wrong while inserting data",
-          })
-      }
+      return res.json({
+        success: true,
+        data: data.toObject(),
+      })
     } catch {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "something went wrong while inserting data",
-        })
+      return res.status(400).json({
+        success: false,
+        message: "something went wrong while inserting data",
+      })
     }
   }
 )
