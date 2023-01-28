@@ -55,4 +55,23 @@ router.put(
   }
 )
 
+router.delete("/delete-billing/:id", async (req: Request, res: Response) => {
+  try {
+    const billing = await Billing.findById(req.params.id)
+    if (!billing)
+      return res.status(404).json({
+        success: false,
+        message: "billing not found",
+      })
+    
+    await Billing.deleteOne({ _id: req.params.id })
+    res.json({ success: true })
+  } catch {
+    return res.status(404).json({
+      success: false,
+      message: "billing not found",
+    })
+  }
+})
+
 export default router
