@@ -7,8 +7,10 @@
     "dev": "nodemon src/app.ts"
   },
   "dependencies": {
+    "argon2": "^0.30.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "mongoose": "^6.9.0",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",
     "zod": "^3.20.2"
