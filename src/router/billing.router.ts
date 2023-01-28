@@ -1,7 +1,7 @@
 import Express, { Request, Response } from "express"
 import Billing from "../models/Billing"
 import { validate } from "../utils/validator"
-import { billingSchema } from "../schema/billing.schema"
+import { billingSchema, updateBillingSchema } from "../schema/billing.schema"
 
 const router = Express.Router()
 
@@ -27,4 +27,25 @@ router.post(
     }
   }
 )
+
+router.put(
+  "/update-billing/:id",
+  validate(updateBillingSchema),
+  async (req: Request, res: Response) => {
+    const { _id, ...data } = req.body
+    
+    const billing = await Billing.findById(_id)
+    if (!billing)
+      return res.status(404).json({
+        success: false,
+        message: "billing not found",
+      })
+    
+    await Billing.updateOne({ _id }, data)
+    res.json({
+      success: true,
+    })
+  }
+)
+
 export default router
