@@ -6,10 +6,21 @@ import { billingSchema } from "../schema/billing.schema"
 const router = Express.Router()
 
 router.get("/billing-list", async (req: Request, res: Response) => {
+  const perPage = 4
+  const page = Number(req.query.page) || 1
+
   try {
     const billings = await Billing.find({})
-    res.json({ success: true, billings })
-  } catch {
+      .limit(perPage)
+      .skip(perPage * (page - 1))
+      .sort({
+        createdAt: "desc",
+      })
+    
+    const count = await Billing.count()
+    
+    res.json({ success: true, billings, pageCount: Math.ceil(count / perPage )})
+  } catch (error) {
     return res.status(400).json({
       success: false,
       message: "something went wrong while fetching billings",
@@ -71,7 +82,7 @@ router.delete("/delete-billing/:id", async (req: Request, res: Response) => {
         success: false,
         message: "billing not found",
       })
-    
+
     await Billing.deleteOne({ _id: req.params.id })
     res.json({ success: true })
   } catch {
