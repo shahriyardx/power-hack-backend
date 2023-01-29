@@ -10,6 +10,7 @@ router.get("/billing-list", async (req: Request, res: Response) => {
   const page = Number(req.query.page) || 1
 
   try {
+    const allBillings = await Billing.find({})
     const billings = await Billing.find({})
       .limit(perPage)
       .skip(perPage * (page - 1))
@@ -18,8 +19,9 @@ router.get("/billing-list", async (req: Request, res: Response) => {
       })
     
     const count = await Billing.count()
+    const totalPaid = allBillings.reduce((a, b) => a + b.payableAmount, 0)
     
-    res.json({ success: true, billings, pageCount: Math.ceil(count / perPage )})
+    res.json({ success: true, billings, pageCount: Math.ceil(count / perPage ), totalPaid })
   } catch (error) {
     return res.status(400).json({
       success: false,
