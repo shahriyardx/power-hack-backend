@@ -6,7 +6,15 @@ import { billingSchema } from "../schema/billing.schema"
 const router = Express.Router()
 
 router.get("/billing-list", async (req: Request, res: Response) => {
-  res.json({ Hello: "World" })
+  try {
+    const billings = await Billing.find({})
+    res.json({ success: true, billings })
+  } catch {
+    return res.status(400).json({
+      success: false,
+      message: "something went wrong while fetching billings",
+    })
+  }
 })
 
 router.post(

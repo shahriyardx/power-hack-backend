@@ -30,7 +30,7 @@ router.post(
     const userObj = user.toObject()
     delete userObj.hash
 
-    res.send(userObj)
+    res.json({success: true, data: userObj})
   }
 )
 

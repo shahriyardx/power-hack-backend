@@ -1,15 +1,17 @@
+import * as dotenv from 'dotenv'
 import mongoose from "mongoose"
 import Express from "express"
-import * as dotenv from 'dotenv'
 import authRouter from "./router/auth.router"
 import billingRouter from "./router/billing.router"
 import { vertifyTokenMiddleware } from "./utils/jwt"
+import cors from "cors"
 
 dotenv.config()
 
 const app = Express()
 
 // Middlewares
+app.use(cors())
 app.use(Express.json())
 app.use(authRouter)
 app.use(vertifyTokenMiddleware, billingRouter)
