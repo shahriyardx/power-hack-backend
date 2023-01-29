@@ -6,7 +6,7 @@ import { billingSchema } from "../schema/billing.schema"
 const router = Express.Router()
 
 router.get("/billing-list", async (req: Request, res: Response) => {
-  const perPage = 4
+  const perPage = 10
   const page = Number(req.query.page) || 1
 
   try {
